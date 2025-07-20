@@ -1,9 +1,9 @@
 import { useState } from "react";
 import css from "../../css/App.module.css";
-import Modal from "../../components/Modal/Modal";
-import NoteList from "../../components/NoteList/NoteList";
-import SearchBox from "../../components/SearchBox/SearchBox";
-import NoteForm from "../../components/NoteForm/NoteForm";
+import Modal from "../Modal/Modal";
+import NoteList from "../NoteList/NoteList";
+import SearchBox from "../SearchBox/SearchBox";
+import NoteForm from "../NoteForm/NoteForm";
 import ReactPaginate from "react-paginate";
 import { useDebounce } from "use-debounce";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
