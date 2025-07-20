@@ -54,7 +54,7 @@ export default function App() {
     <div className={css.app}>
       <header className={css.toolbar}>
         <button onClick={openModal} className={css.submitButton}>
-          Create Note +
+          Create Note
         </button>
         <SearchBox value={searchTerm} onChange={setSearchTerm} />
       </header>
