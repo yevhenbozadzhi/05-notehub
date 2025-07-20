@@ -16,3 +16,7 @@ export interface NewNoteData {
 
 export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
+export interface onClose{
+  onClose: () => void;
+}
+

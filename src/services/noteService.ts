@@ -10,45 +10,43 @@ const instance = axios.create({
   },
 });
 
-export const getNotes = async () => {
-  const res = await instance.get<Note[]>("/notes");
+export const getNotes = async (): Promise<Note[]> => {
+  const res = await instance.get("/notes");
   return res.data;
 };
 
-export const addNote = async (noteData: NewNoteData) => {
-  const res = await instance.post<Note>("/notes", noteData);
+export const addNote = async (newNote: NewNoteData): Promise<Note> => {
+  const res = await instance.post("/notes", newNote);
   return res.data;
 };
 
+export const deleteNote = async (id: string): Promise<void> => {
+  await instance.delete(`/notes/${id}`);
+};
 
-interface FetchNoteResponse{
-    notes: Note[];
-    total: number;
-    page: number;
-    perPage: number;
+
+interface FetchNotesResponse {
+  notes: Note[];
+  total: number;
+  page: number;
+  perPage: number;
 }
 
-export const fetchNote = async (
-    page: number = 1,
-    perPage: number = 12,
-    search: string = '',
-): Promise<FetchNoteResponse> => {
-    const res = await instance.get<FetchNoteResponse>('/note', {
-        params: {
-            page,
-            perPage,
-            search,
-        },
-    });
-    return res.data;
+export const fetchNotes = async (
+  page = 1,
+  perPage = 12,
+  search = ""
+): Promise<FetchNotesResponse> => {
+  const params: Record<string, string | number> = { page, perPage };
+  if (search.trim() !== "") {
+    params.search = search.trim();
+  }
+
+  console.log("fetchNotes params:", params);
+
+  const res = await instance.get<FetchNotesResponse>("/notes", {
+    params,
+  });
+  return res.data;
 };
 
-export const createNote = async (noteData: NewNoteData): Promise<Note> => {
-    const res = await instance.post<Note>(`/notes`, noteData);
-    return res.data;
-};
-
-export const deleteNote = async (id: string): Promise<Note> => {
-    const res = await instance.delete<Note>(`/note/${id}`);
-    return res.data;
-};

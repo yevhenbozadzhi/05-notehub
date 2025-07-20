@@ -1,15 +1,15 @@
-import type {Note} from "../../types/note"
-import css from "../../css/NoteList.module.css"
+import type { Note } from "../../types/note";
+import css from "../../css/NoteList.module.css";
 
 interface NoteListProps {
-  note: Note[];
+  notes: Note[];
   onDelete: (id: string) => void;
 }
 
-export default function NoteList({ note, onDelete }: NoteListProps) {
+export default function NoteList({ notes, onDelete }: NoteListProps) {
   return (
     <ul className={css.list}>
-      {note.map((item) => (
+      {notes.map((item) => (
         <li key={item.id} className={css.listItem}>
           <h2 className={css.title}>{item.title}</h2>
           <p className={css.content}>{item.content}</p>
