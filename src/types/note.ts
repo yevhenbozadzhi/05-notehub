@@ -1,11 +1,10 @@
 export interface Note {
-  id: string;
+  id: number;
   title: string;
-  content?: string;
+  content: string;
   tag: string;
   createdAt: string;
     updatedAt: string;
-    completed?: boolean;
 }
 
 export interface NewNoteData {
@@ -16,7 +15,4 @@ export interface NewNoteData {
 
 export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
-export interface onClose{
-  onClose: () => void;
-}
 

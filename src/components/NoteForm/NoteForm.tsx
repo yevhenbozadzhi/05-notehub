@@ -2,8 +2,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import css from "../../css/NoteForm.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addNote } from "../../services/noteService";
-import type { NewNoteData, onClose } from "../../types/note";
+import { addNote, NoteFormProps } from "../../services/noteService";
+import type { NewNoteData } from "../../types/note";
+
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -11,14 +12,14 @@ const validationSchema = Yup.object({
     .max(50, "Maximum 50 characters")
     .required("Required field"),
   content: Yup.string()
-    .max(500, "Maximum 500 characters"),
+    .max(500, "Maximum 500 characters")
+    .required("Required field"),
   tag: Yup.string()
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag")
     .required("Required field"),
 });
 
-
-export default function NoteForm({ onClose }: onClose) {
+export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({

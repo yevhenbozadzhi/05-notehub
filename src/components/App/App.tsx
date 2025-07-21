@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import css from "../../css/App.module.css";
 import Modal from "../Modal/Modal";
 import NoteList from "../NoteList/NoteList";
@@ -9,6 +9,7 @@ import { useDebounce } from "use-debounce";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteNote, fetchNotes } from "../../services/noteService";
 import type { Note } from "../../types/note";
+import { number } from "yup";
 
 interface FetchNoteResponse {
   notes: Note[];
@@ -26,6 +27,10 @@ export default function App() {
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
   const perPage = 12;
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm]);
+
   const { data, isLoading } = useQuery<FetchNoteResponse>({
     queryKey: ["notes", page, debouncedSearchTerm],
     queryFn: () => fetchNotes(page, perPage, debouncedSearchTerm),
@@ -33,13 +38,13 @@ export default function App() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteNote(id),
+    mutationFn: (id: number) => deleteNote(id.toString()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes", page, debouncedSearchTerm] });
     },
   });
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: number) => {
     deleteMutation.mutate(id);
   };
 

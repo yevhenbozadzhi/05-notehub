@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import css from "../../css/Modal.module.css";
 
-interface ModalProps {
+export interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
 }
-
-const modalRoot = document.getElementById("modal-root")!;
 
 export default function Modal({ onClose, children }: ModalProps) {
   useEffect(() => {
@@ -17,8 +15,11 @@ export default function Modal({ onClose, children }: ModalProps) {
       }
     };
     window.addEventListener("keydown", handleEsc);
+
+    document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "";
     };
   }, [onClose]);
 
@@ -37,6 +38,6 @@ export default function Modal({ onClose, children }: ModalProps) {
     >
       <div className={css.modal}>{children}</div>
     </div>,
-    modalRoot
+    document.body
   );
 }

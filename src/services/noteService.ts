@@ -50,3 +50,7 @@ export const fetchNotes = async (
   return res.data;
 };
 
+
+export interface NoteFormProps {
+  onClose: () => void;
+}
