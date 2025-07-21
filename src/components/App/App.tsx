@@ -9,7 +9,7 @@ import { useDebounce } from "use-debounce";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteNote, fetchNotes } from "../../services/noteService";
 import type { Note } from "../../types/note";
-import { number } from "yup";
+// import { number } from "yup";
 
 interface FetchNoteResponse {
   notes: Note[];
