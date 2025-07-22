@@ -17,7 +17,6 @@ interface FetchNotesResponse {
   perPage: number;
 }
 
-
 export const fetchNotes = async (
   page = 1,
   perPage = 12,
@@ -34,24 +33,15 @@ export const fetchNotes = async (
   return res.data;
 };
 
-
-export const getNotes = async (): Promise<Note[]> => {
-  const res = await instance.get<Note[]>("/notes");
-  return res.data;
-};
-
-
 export const addNote = async (newNote: NewNoteData): Promise<Note> => {
   const res = await instance.post<Note>("/notes", newNote);
   return res.data;
 };
 
-
-export const deleteNote = async (id: number): Promise<Note> => {
+export const deleteNote = async (id: string): Promise<Note> => {
   const res = await instance.delete<Note>(`/notes/${id}`);
   return res.data;
 };
-
 
 export interface NoteFormProps {
   onClose: () => void;
