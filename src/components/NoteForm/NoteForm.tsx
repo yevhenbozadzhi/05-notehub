@@ -12,12 +12,12 @@ const validationSchema = Yup.object({
     .max(50, "Maximum 50 characters")
     .required("Required field"),
   content: Yup.string()
-    .max(500, "Maximum 500 characters")
-    .required("Required field"),
+    .max(500, "Maximum 500 characters"), 
   tag: Yup.string()
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag")
     .required("Required field"),
 });
+
 
 export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();

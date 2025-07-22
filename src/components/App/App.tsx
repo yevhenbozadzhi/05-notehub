@@ -4,12 +4,11 @@ import Modal from "../Modal/Modal";
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 import NoteForm from "../NoteForm/NoteForm";
-import ReactPaginate from "react-paginate";
 import { useDebounce } from "use-debounce";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteNote, fetchNotes } from "../../services/noteService";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { fetchNotes } from "../../services/noteService";
 import type { Note } from "../../types/note";
-// import { number } from "yup";
+import Pagination from "../Pagination/Pagination";
 
 interface FetchNoteResponse {
   notes: Note[];
@@ -19,7 +18,6 @@ interface FetchNoteResponse {
 }
 
 export default function App() {
-  const queryClient = useQueryClient();
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -37,23 +35,10 @@ export default function App() {
     placeholderData: keepPreviousData,
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteNote(id.toString()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes", page, debouncedSearchTerm] });
-    },
-  });
-
-  const handleDelete = (id: number) => {
-    deleteMutation.mutate(id);
-  };
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    setPage(selected + 1);
-  };
 
   return (
     <div className={css.app}>
@@ -67,22 +52,14 @@ export default function App() {
       {isLoading && <strong className={css.loading}>Loading notes...</strong>}
 
       {data && data.notes.length > 0 && (
-        <NoteList notes={data.notes} onDelete={handleDelete} />
+        <NoteList notes={data.notes} />
       )}
 
       {data && data.total > perPage && (
-        <ReactPaginate
+        <Pagination
           pageCount={Math.ceil(data.total / perPage)}
-          pageRangeDisplayed={5}
-          marginPagesDisplayed={1}
-          onPageChange={handlePageChange}
-          forcePage={page - 1}
-          containerClassName={css.pagination}
-          activeClassName={css.active}
-          disabledClassName={css.disabled}
-          nextLabel="→"
-          previousLabel="←"
-          breakLabel="..."
+          currentPage={page}
+          onPageChange={setPage}
         />
       )}
 
